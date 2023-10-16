@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sample Smart Book</title>
+    <title>HKB</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,24 +11,33 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background-image: url('image.jpg');
+            background-size: cover; /* Adjust the image size to cover the container */
+            background-repeat: no-repeat; /* Prevent the image from repeating */
+            background-position: center center; /* Center the background image */
             margin: 0;
         }
         .book {
-            width: 50%;
-            height: 90%;
+            width: 60%;
+            height: 100vh;
             padding: 20px;
             border: 1px solid #ccc;
-            background-color: #f8f8f8;
+            background-image: url('main.jpg');
+            background-size: 100% 100%; /* Adjust the image size to cover the container */
+            background-repeat: no-repeat; /* Prevent the image from repeating */
+            background-position: center center; /* Center the background image */
             display: flex;
             flex-direction: row;
             border-radius: 10px;
             overflow: hidden;
+            direction: rtl;
         }
         .page {
             display: none;
             flex: 1;
             padding: 20px;
             position: relative;
+           
         }
         .page.active {
             display: block;
@@ -47,17 +56,8 @@
     </style>
 </head>
 <body>
-    <div class="book">
-        <div class="page active" id="page1">
-            
-            <div id="content1"></div>
-            <div class="page-number">Page 1 of 2</div>
-        </div>
-        <div class="page" id="page2">
-            
-            <div id="content2"></div>
-            <div class="page-number">Page 2 of 2</div>
-        </div>
+    <div class="book" id="book-container">
+        <!-- Pages will be dynamically loaded here -->
     </div>
     <div id="navigation">
         <button id="prevPage">Previous</button>
@@ -66,25 +66,43 @@
 
     <script>
         // JavaScript to handle page navigation
-        const pages = document.querySelectorAll('.page');
+        const bookContainer = document.getElementById('book-container');
+        const pages = [];
         let currentPage = 0;
 
         function showPage(pageIndex) {
             pages[currentPage].classList.remove('active');
             pages[pageIndex].classList.add('active');
             currentPage = pageIndex;
+
+            const bookElement = document.querySelector('.book');
+            if(currentPage == 0) {
+                bookElement.style.backgroundImage = `url(main.jpg)`;
+            }
+             else{
+                bookElement.style.backgroundImage = `url(paper.jpg)`;
+
+            }
+           
         }
 
         function navigateNext() {
+            
             if (currentPage < pages.length - 1) {
                 showPage(currentPage + 1);
-            }
+               
+ 
+        }
         }
 
         function navigatePrevious() {
+            
             if (currentPage > 0) {
                 showPage(currentPage - 1);
+               
+
             }
+         
         }
 
         const nextButton = document.getElementById('nextPage');
@@ -94,18 +112,32 @@
         prevButton.addEventListener('click', navigatePrevious);
 
         // Function to fetch and load page content from HTML files
-        function loadPageContent() {
-            for (let i = 1; i <= 2; i++) {
-                fetch(`page${i}.html`)
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById(`content${i}`).innerHTML = data;
-                    })
-                    .catch(error => console.error(`Error loading page ${i}:`, error));
+        async function loadPages() {
+            let pageIndex = 0;
+            while (true) {
+                try {
+                    const response = await fetch(`page${pageIndex + 1}.html`);
+                    if (!response.ok) {
+                        break; // No more pages found
+                    }
+                    const data = await response.text();
+                    const page = document.createElement('div');
+                    page.classList.add('page');
+                    if (pageIndex === 0) {
+                        page.classList.add('active');
+                    }
+                    page.innerHTML = data;
+                    bookContainer.appendChild(page);
+                    pages.push(page);
+                    pageIndex++;
+                } catch (error) {
+                    console.error(`Error loading page ${pageIndex + 1}:`, error);
+                    break;
+                }
             }
         }
 
-        loadPageContent(); // Load content when the page loads
+        loadPages(); // Load pages when the page loads
     </script>
 </body>
 </html>
