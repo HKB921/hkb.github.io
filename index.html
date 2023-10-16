@@ -1,60 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HKB</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-image: url('image.jpg');
-            background-size: cover; /* Adjust the image size to cover the container */
-            background-repeat: no-repeat; /* Prevent the image from repeating */
-            background-position: center center; /* Center the background image */
-            margin: 0;
-        }
-        .book {
-            width: 60%;
-            height: 100vh;
-            padding: 20px;
-            border: 1px solid #ccc;
-            background-image: url('main.jpg');
-            background-size: 100% 100%; /* Adjust the image size to cover the container */
-            background-repeat: no-repeat; /* Prevent the image from repeating */
-            background-position: center center; /* Center the background image */
-            display: flex;
-            flex-direction: row;
-            border-radius: 10px;
-            overflow: hidden;
-            direction: rtl;
-        }
-        .page {
-            display: none;
-            flex: 1;
-            padding: 20px;
-            position: relative;
-           
-        }
-        .page.active {
-            display: block;
-        }
-        .page-number {
-            font-size: 12px;
-            position: absolute;
-            bottom: 0;
-            right: 10px;
-        }
-        #navigation {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>HKB</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-image: url('image.jpg');
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center center;
+                margin: 0;
+            }
+            .book {
+                width: 60%;
+                height: 100vh;
+                padding: 20px;
+                border: 1px solid #ccc;
+                background-image: url('main.jpg');
+                background-size: 100% 100%;
+                background-repeat: no-repeat;
+                background-position: center center;
+                display: flex;
+                flex-direction: row;
+                border-radius: 10px;
+                overflow: hidden;
+                direction: rtl;
+            }
+            .page {
+                display: none;
+                flex: 1;
+                padding: 20px;
+                position: relative;
+            }
+            .page.active {
+                display: block;
+            }
+            .page-number {
+                font-size: 12px;
+                position: absolute;
+                bottom: 0;
+                right: 10px;
+            }
+            #navigation {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                padding: 10px;
+            }
+            #prevPage, #nextPage {
+                width: 100%;
+                padding: 10px;
+                font-size: 16px;
+            }
+    
+            /* Media Queries for Responsive Design */
+            @media (max-width: 768px) {
+                .book {
+                    width: 90%;
+                    padding: 10px;
+                }
+            }
+    
+            @media (max-width: 480px) {
+                .book {
+                    width: 95%;
+                    padding: 5px;
+                }
+            }
+        </style>
+    </head>
 <body>
     <div class="book" id="book-container">
         <!-- Pages will be dynamically loaded here -->
